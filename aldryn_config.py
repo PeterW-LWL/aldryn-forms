@@ -8,4 +8,5 @@ class Form(forms.BaseForm):
 
     def to_settings(self, data, settings):
         settings['ALDRYN_FORMS_SHOW_ALL_RECIPIENTS'] = data['show_all_recipients']
+        settings['ALDRYN_FORMS_IGNORE_HONEYPOT_CAPTCHA'] = False
         return settings

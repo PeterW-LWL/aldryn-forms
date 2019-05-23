@@ -3,6 +3,7 @@ from PIL import Image
 
 from django import forms
 from django.db.models import query
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.admin import TabularInline
 from django.core.validators import MinLengthValidator
@@ -23,6 +24,7 @@ from . import models
 from .forms import (
     RestrictedFileField,
     RestrictedImageField,
+    HoneypotField,
     EmailFieldForm,
     FormSubmissionBaseForm,
     FormPluginForm,
@@ -46,6 +48,7 @@ from .validators import (
     MinChoicesValidator,
     MaxChoicesValidator
 )
+from .widgets import HoneypotInput
 
 
 class FormElement(CMSPluginBase):
@@ -116,6 +119,19 @@ class FormPlugin(FieldContainer):
         form_class = self.get_form_class(instance)
         form_kwargs = self.get_form_kwargs(instance, request)
         form = form_class(**form_kwargs)
+
+        is_honeypot_captcha_ignore = getattr(
+            settings, 'ALDRYN_FORMS_IGNORE_HONEYPOT_CAPTCHA', False
+        )
+        if is_honeypot_captcha_ignore:
+            honeypot_fields = [field for field in form.errors if field.startswith('honeypotcaptcha')]
+            is_honeypot_filled = bool(honeypot_fields)
+            if is_honeypot_filled:
+                form_errors = form.errors.copy()
+                for field in form_errors:
+                    if field in honeypot_fields:
+                        del form.errors[field]
+                return form
 
         if request.POST.get('form_plugin_id') == str(instance.id) and form.is_valid():
             fields = [field for field in form.base_fields.values()
@@ -876,6 +892,22 @@ else:
     plugin_pool.register_plugin(CaptchaField)
 
 
+class HoneypotCaptchaPlugin(Field):
+    name = _("Honeypot Captcha")
+    parent_classes = [
+        "FormPlugin",
+        "EmailNotificationForm",
+    ]
+    allow_children = False
+
+    form_field = HoneypotField
+    form_field_widget = HoneypotInput
+
+    form_field_enabled_options = []
+    fieldset_general_fields = []
+    fieldset_advanced_fields = []
+
+
 class SubmitButton(FormElement):
     render_template = 'aldryn_forms/submit_button.html'
     name = _('Submit Button')
@@ -898,3 +930,4 @@ plugin_pool.register_plugin(SelectField)
 plugin_pool.register_plugin(SubmitButton)
 plugin_pool.register_plugin(TextAreaField)
 plugin_pool.register_plugin(TextField)
+plugin_pool.register_plugin(HoneypotCaptchaPlugin)
