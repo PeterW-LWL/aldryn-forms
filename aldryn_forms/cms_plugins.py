@@ -120,10 +120,10 @@ class FormPlugin(FieldContainer):
         form_kwargs = self.get_form_kwargs(instance, request)
         form = form_class(**form_kwargs)
 
-        is_honeypot_captcha_ignore = getattr(
+        is_honeypot_captcha_enabled = getattr(
             settings, 'ALDRYN_FORMS_IGNORE_HONEYPOT_CAPTCHA', False
         )
-        if is_honeypot_captcha_ignore:
+        if is_honeypot_captcha_enabled:
             honeypot_fields = [field for field in form.errors if field.startswith('honeypotcaptcha')]
             is_honeypot_filled = bool(honeypot_fields)
             if is_honeypot_filled:
