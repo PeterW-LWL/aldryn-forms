@@ -930,4 +930,10 @@ plugin_pool.register_plugin(SelectField)
 plugin_pool.register_plugin(SubmitButton)
 plugin_pool.register_plugin(TextAreaField)
 plugin_pool.register_plugin(TextField)
-plugin_pool.register_plugin(HoneypotCaptchaPlugin)
+
+
+is_honeypot_captcha_enabled = getattr(
+    settings, 'ALDRYN_FORMS_IS_HONEYPOT_CAPTCHA_ENABLED', False
+)
+if is_honeypot_captcha_enabled:
+    plugin_pool.register_plugin(HoneypotCaptchaPlugin)
