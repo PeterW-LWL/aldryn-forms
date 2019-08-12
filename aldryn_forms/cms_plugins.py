@@ -48,7 +48,6 @@ from .validators import (
     MinChoicesValidator,
     MaxChoicesValidator
 )
-from .widgets import HoneypotInput
 
 
 class FormElement(CMSPluginBase):
