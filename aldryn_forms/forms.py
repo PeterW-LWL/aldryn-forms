@@ -93,7 +93,6 @@ class HoneypotField(forms.CharField):
     def __init__(self, **kwargs):
         assert 'required' not in kwargs
         kwargs['required'] = False
-        kwargs['label'] = 'required_field'
         kwargs.setdefault('label', '')
         super(HoneypotField, self).__init__(**kwargs)
 

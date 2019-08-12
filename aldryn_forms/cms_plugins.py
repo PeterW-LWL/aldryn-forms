@@ -124,7 +124,7 @@ class FormPlugin(FieldContainer):
             settings, 'ALDRYN_FORMS_IS_HONEYPOT_CAPTCHA_ENABLED', False
         )
         if is_honeypot_captcha_enabled:
-            honeypot_fields = [field for field in form.errors if field.startswith('honeypotcaptcha')]
+            honeypot_fields = [field for field in form.errors if field.startswith('securitycheck')]
             is_honeypot_filled = bool(honeypot_fields)
             if is_honeypot_filled:
                 form_errors = form.errors.copy()
@@ -892,7 +892,7 @@ else:
     plugin_pool.register_plugin(CaptchaField)
 
 
-class HoneypotCaptchaPlugin(Field):
+class SecurityCheckPlugin(Field):
     name = _("Honeypot Captcha")
     parent_classes = [
         "FormPlugin",
@@ -901,7 +901,7 @@ class HoneypotCaptchaPlugin(Field):
     allow_children = False
 
     form_field = HoneypotField
-    form_field_widget = HoneypotInput
+    form_field_widget = forms.Textarea
 
     form_field_enabled_options = []
     fieldset_general_fields = []
@@ -936,4 +936,4 @@ is_honeypot_captcha_enabled = getattr(
     settings, 'ALDRYN_FORMS_IS_HONEYPOT_CAPTCHA_ENABLED', False
 )
 if is_honeypot_captcha_enabled:
-    plugin_pool.register_plugin(HoneypotCaptchaPlugin)
+    plugin_pool.register_plugin(SecurityCheckPlugin)
