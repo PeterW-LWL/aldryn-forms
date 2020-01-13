@@ -5,12 +5,12 @@ from aldryn_forms import __version__
 
 
 REQUIREMENTS = [
+    'django>=2.0',
     'aldryn-boilerplates>=0.7.5',
     'django-cms>=3.5',
     'django-emailit',
     'djangocms-text-ckeditor',
     'djangocms-attributes-field>=1.0.0',
-    'django-simple-captcha',
     'django-tablib',
     'tablib',
     'pillow',
@@ -28,12 +28,8 @@ CLASSIFIERS = [
     'License :: OSI Approved :: BSD License',
     'Operating System :: OS Independent',
     'Framework :: Django',
-    'Framework :: Django :: 1.11',
-    'Framework :: Django :: 2.0',
-    'Framework :: Django :: 2.1',
+    'Framework :: Django :: 2.2',
     'Programming Language :: Python',
-    'Programming Language :: Python :: 2',
-    'Programming Language :: Python :: 2.7',
     'Programming Language :: Python :: 3',
     'Programming Language :: Python :: 3.4',
     'Programming Language :: Python :: 3.5',
@@ -58,6 +54,9 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=REQUIREMENTS,
+    extras_require={
+        'captcha': ['django-simple-captcha'],
+    },
     classifiers=CLASSIFIERS,
     test_suite='tests.settings.run',
 )
