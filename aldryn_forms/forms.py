@@ -3,8 +3,8 @@ from django import forms
 from django.conf import settings
 from django.forms.forms import NON_FIELD_ERRORS
 from django.forms.utils import ErrorDict
-from django.utils.translation import ugettext
-from django.utils.translation import ugettext_lazy as _
+from django.core.exceptions import ValidationError
+from django.utils.translation import ugettext, ugettext_lazy as _
 
 from PIL import Image
 
@@ -79,6 +79,33 @@ class RestrictedImageField(FileSizeCheckMixin, forms.ImageField):
                 })
 
         return data
+
+
+class HoneypotField(forms.CharField):
+    """
+    Honeypot form field.
+    Inspired from https://github.com/mixkorshun/django-antispam/blob/master/antispam/honeypot/forms.py
+    """
+    default_error_messages = {
+        'honeypot': _('Invalid value for honey pot field.'),
+    }
+
+    def __init__(self, **kwargs):
+        assert 'required' not in kwargs
+        kwargs['required'] = False
+        kwargs.setdefault('label', '')
+        super(HoneypotField, self).__init__(**kwargs)
+
+    def clean(self, *args, **kwargs):
+        """
+        Validates form field value entered by user.
+        :param value: user-input
+        :raise: ValidationError with code="spam-protection" if honeypot check failed.
+        """
+        data = super(HoneypotField, self).clean(*args, **kwargs)
+
+        if data:
+            raise ValidationError(self.error_messages['honeypot'], code='spam-protection')
 
 
 class FormSubmissionBaseForm(forms.Form):
