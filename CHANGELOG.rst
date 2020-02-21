@@ -3,11 +3,18 @@ Changelog
 =========
 
 
+5.0.3 (2020-02-21)
+==================
+
+* Fix the 'formsubmission' export functionality
+
+
 5.0.2 (2020-02-21)
 ==================
 
 * Remove unicode characters
 * Fix the Form Advanced email help_text rendering
+
 
 5.0.1 (2020-01-06)
 ==================
