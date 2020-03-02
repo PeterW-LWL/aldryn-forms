@@ -549,10 +549,6 @@ class HiddenField(BaseTextField):
     fieldset_general_fields = ['name', 'initial_value']
     fieldset_advanced_fields = []
 
-    def serialize_field(self, *args, **kwargs):
-        # None means don't serialize me
-        return None
-
 
 class PhoneField(BaseTextField):
     name = _('Phone Field')
