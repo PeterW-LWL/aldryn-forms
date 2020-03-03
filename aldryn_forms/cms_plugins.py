@@ -546,7 +546,7 @@ class HiddenField(BaseTextField):
     name = _('Hidden Field')
     form = HiddenFieldForm
     form_field_widget_input_type = 'hidden'
-    fieldset_general_fields = ['name', 'initial_value']
+    fieldset_general_fields = ['label', 'name', 'initial_value']
     fieldset_advanced_fields = []
 
 
