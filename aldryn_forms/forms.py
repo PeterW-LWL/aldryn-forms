@@ -269,7 +269,7 @@ class TextFieldForm(MinMaxValueForm):
 
 class HiddenFieldForm(ExtandableErrorForm):
     class Meta:
-        fields = ['name', 'initial_value']
+        fields = ['label', 'name', 'initial_value']
 
 
 class EmailFieldForm(TextFieldForm):
