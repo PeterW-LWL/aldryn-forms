@@ -2,6 +2,12 @@
 Changelog
 =========
 
+5.0.5.1 (2020-03-04)
+==================
+
+* Fix the displaying of HiddenField plugin label in the email
+
+
 5.0.5 (2020-03-03)
 ==================
 
